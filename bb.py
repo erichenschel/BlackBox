@@ -31,69 +31,69 @@ class Game:
         for a in atoms:
             row = a[0]
             col = a[1]
-
+            
+            # condition 1: row not in (0,7) and col not in (0, 7) ------------------------------------
             if row not in (0, self.boardSize-1):
-                b[row-1][col] = 1.0
                 b[row+1][col] = 1.0
-            
+                b[row-1][col] = 1.0  
+            if row not in (0, self.boardSize-1) and col not in (0, self.boardSize-1):
+                b[row+1][col+1] = 1.0
+                b[row-1][col+1] = 1.0
+                b[row+1][col-1] = 1.0
+                b[row-1][col-1] = 1.0
             if col not in (0, self.boardSize-1):
-                b[row][col-1] = 1.0
                 b[row][col+1] = 1.0
-             
-            if col not in (0, self.boardSize-1) and row not in (0, self.boardSize-1):
-                b[row+1][col+1] = 1.0
-                b[row-1][col+1] = 1.0
-                b[row+1][col-1] = 1.0
-                b[row-1][col-1] = 1.0
-
-            if col == 0 and row not in (0, self.boardSize-1):
-                b[row+1][col+1] = 1.0
-                b[row-1][col+1] = 1.0
-                b[row][col+1] = 1.0
-
-            if col == self.boardSize-1 and row not in (0, self.boardSize-1):
-                b[row+1][col-1] = 1.0
-                b[row-1][col-1] = 1.0
-                b[row][col-1] = 1.0
-            
-            if col == 0 and row == 0:
-                b[row+1][col+1] = 1.0
-                b[row-1][col+1] = 1.0
-                b[row][col+1] = 1.0
-
-            if col == self.boardSize-1 and row == 0:
-                b[row+1][col-1] = 1.0
-                b[row-1][col-1] = 1.0
-                b[row][col-1] = 1.0
-            
-            if col == 0 and row == self.boardSize-1:
-                b[row+1][col+1] = 1.0
-                b[row-1][col+1] = 1.0
-                b[row][col+1] = 1.0
-
-            if col == self.boardSize-1 and row == self.boardSize-1:
-                b[row+1][col-1] = 1.0
-                b[row-1][col-1] = 1.0
                 b[row][col-1] = 1.0
 
+            # condition 2: row in (0, 7) col not in (0, 7) -------------------------------------------
             if row == 0 and col not in (0, self.boardSize-1): 
                 b[row+1][col+1] = 1.0
                 b[row+1][col-1] = 1.0
                 b[row+1][col] = 1.0
-
             if row == self.boardSize-1 and col not in (0, self.boardSize-1):
                 b[row-1][col+1] = 1.0
                 b[row-1][col-1] = 1.0
                 b[row-1][col] = 1.0
+
+            # condition 3: row not in (0, 7) col in (0, 7) -------------------------------------------
+            if row not in (0, self.boardSize-1) and col == 0:
+                b[row+1][col+1] = 1.0
+                b[row-1][col+1] = 1.0
+                b[row][col+1] = 1.0
+
+            if row not in (0, self.boardSize-1) and col == self.boardSize-1:
+                b[row+1][col-1] = 1.0
+                b[row-1][col-1] = 1.0
+                b[row][col-1] = 1.0
                 
-       
+            # condition 4: row in (0, 7) col in (0, 7) ---------------------------------------------
+            if row == 0 and col == 0:
+                b[row][col+1] = 1.0
+                b[row+1][col+1] = 1.0
+                b[row+1][col] = 1.0
+
+            if row == self.boardSize-1 and col == 0:
+                b[row][col+1] = 1.0
+                b[row-1][col+1] = 1.0
+                b[row-1][col] = 1.0
+            
+            if row == 0 and col == self.boardSize-1:
+                b[row][col-1] = 1.0
+                b[row+1][col] = 1.0
+                b[row+1][col-1] = 1.0
+            
+            if row == self.boardSize-1 and col == self.boardSize-1:
+                b[row][col-1] = 1.0
+                b[row-1][col-1] = 1.0
+                b[row-1][col] = 1.0
+                
+        for a in atoms:
+            print(a)
+            row=a[0]
+            col=a[1]
             b[row][col] = 2.0
         
         return np.array(b), atoms
-
-
-
-
 
     # have user choose at which (row, col) to shoot a ray
     def rayEntry(self):
@@ -148,6 +148,6 @@ class Game:
 if __name__=="__main__":
     G = Game()
     board = G.gameBoard()
-    ray = G.rayEntry()
+    #ray = G.rayEntry()
     print(board)
-    print(ray)
+    #print(ray)
