@@ -95,8 +95,10 @@ class Game:
         
         return np.array(b), atoms
 
+
+
     # have user choose at which (row, col) to shoot a ray
-    def rayEntry(self):
+    def fireRay(self):
         while True:
             row = int(input("Select a row: "))
             col = int(input("Select a col: "))
@@ -134,8 +136,9 @@ class Game:
 
         # miss
         def miss():
-            #if self.rayEntry()[0] !=
-            return True
+            for i in range(self.boardSize-1):
+
+            return True, exit
 
         # detour
         def detour():
