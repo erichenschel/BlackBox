@@ -6,6 +6,7 @@ class Game:
     def __init__(self):
         self.boardSize = 8
         self.numAtoms = 4
+        #random.seed(4)
 
         
     # m x n matrix w/ rows=m, cols=n
@@ -30,22 +31,64 @@ class Game:
         for a in atoms:
             row = a[0]
             col = a[1]
-            if row not in (0, self.boardSize-1) and col not in (0, self.boardSize-1):
+
+            if row not in (0, self.boardSize-1):
                 b[row-1][col] = 1.0
                 b[row+1][col] = 1.0
+            
+            if col not in (0, self.boardSize-1):
                 b[row][col-1] = 1.0
                 b[row][col+1] = 1.0
-
+             
+            if col not in (0, self.boardSize-1) and row not in (0, self.boardSize-1):
                 b[row+1][col+1] = 1.0
                 b[row-1][col+1] = 1.0
                 b[row+1][col-1] = 1.0
                 b[row-1][col-1] = 1.0
-       
-                b[row][col] = 2.0
-            elif row in (0, self.boardSize-1) and col not in (0, self.boardSize-1):
-                b[row][col] = 2.0
-                
 
+            if col == 0 and row not in (0, self.boardSize-1):
+                b[row+1][col+1] = 1.0
+                b[row-1][col+1] = 1.0
+                b[row][col+1] = 1.0
+
+            if col == self.boardSize-1 and row not in (0, self.boardSize-1):
+                b[row+1][col-1] = 1.0
+                b[row-1][col-1] = 1.0
+                b[row][col-1] = 1.0
+            
+            if col == 0 and row == 0:
+                b[row+1][col+1] = 1.0
+                b[row-1][col+1] = 1.0
+                b[row][col+1] = 1.0
+
+            if col == self.boardSize-1 and row == 0:
+                b[row+1][col-1] = 1.0
+                b[row-1][col-1] = 1.0
+                b[row][col-1] = 1.0
+            
+            if col == 0 and row == self.boardSize-1:
+                b[row+1][col+1] = 1.0
+                b[row-1][col+1] = 1.0
+                b[row][col+1] = 1.0
+
+            if col == self.boardSize-1 and row == self.boardSize-1:
+                b[row+1][col-1] = 1.0
+                b[row-1][col-1] = 1.0
+                b[row][col-1] = 1.0
+
+            if row == 0 and col not in (0, self.boardSize-1): 
+                b[row+1][col+1] = 1.0
+                b[row+1][col-1] = 1.0
+                b[row+1][col] = 1.0
+
+            if row == self.boardSize-1 and col not in (0, self.boardSize-1):
+                b[row-1][col+1] = 1.0
+                b[row-1][col-1] = 1.0
+                b[row-1][col] = 1.0
+                
+       
+            b[row][col] = 2.0
+        
         return np.array(b), atoms
 
 
