@@ -19,12 +19,38 @@ class Game:
 
     def gameBoard(self):
         b = self.blankBoard()
+        # place atoms
         atoms = []
         for i in range(self.numAtoms):
             atom = self.placeAtom()
-            b[atom[0]][atom[1]] = 1.0
+            row, col = atom[0], atom[1]
             atoms.append(atom)
+        
+        # make force fields
+        for a in atoms:
+            row = a[0]
+            col = a[1]
+            if row not in (0, self.boardSize-1) and col not in (0, self.boardSize-1):
+                b[row-1][col] = 1.0
+                b[row+1][col] = 1.0
+                b[row][col-1] = 1.0
+                b[row][col+1] = 1.0
+
+                b[row+1][col+1] = 1.0
+                b[row-1][col+1] = 1.0
+                b[row+1][col-1] = 1.0
+                b[row-1][col-1] = 1.0
+       
+                b[row][col] = 2.0
+            elif row in (0, self.boardSize-1) and col not in (0, self.boardSize-1):
+                b[row][col] = 2.0
+                
+
         return np.array(b), atoms
+
+
+
+
 
     # have user choose at which (row, col) to shoot a ray
     def rayEntry(self):
