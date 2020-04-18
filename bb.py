@@ -146,7 +146,15 @@ class Game:
         path = [start]
         while path != []:
 
+            # direction
+            # start from top -- change row (increase)
+            
 
+            # start from bottom -- change row (decrease)
+            
+            # start from right -- change col (decrease)
+            
+            # start from left -- change col (increase)
 
 
 
