@@ -152,6 +152,7 @@ class Game:
         I = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
         # indices [up-left, up-right, down-left, down-right]
         II = [(row-1, col-1), (row-1, col+1), (row+1, col-1), (row+1, col+1)]
+        print(II[0][0])
         # values surrounding currPos
         surr = [[board[II[0][0]][II[0][1]], board[I[0][0]][I[0][1]], board[II[1][0]][II[1][1]]],
                 [board[I[2][0]][I[2][1]], board[row][col], board[I[3][0]][I[3][1]]],
@@ -168,7 +169,7 @@ if __name__=="__main__":
     board = G.gameBoard()
     ray = G.rayLocation()
     #path = G.rayPath(ray, board)
-    surr = G.surrVals()
+    surr = G.surrVals(ray, board)
     print(board)
     print(ray)
     #print(path)
