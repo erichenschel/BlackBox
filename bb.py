@@ -6,7 +6,7 @@ class Game:
     def __init__(self):
         self.boardSize = 8
         self.numAtoms = 4
-        #random.seed(4)
+        random.seed(6)
 
         
     # m x n matrix w/ rows=m, cols=n
@@ -98,11 +98,24 @@ class Game:
 
 
     # have user choose at which (row, col) to shoot a ray
-    def fireRay(self):
+    def rayLocation(self):
+        c1 = input("Select a firing position (top, bottom, right, left): ")
+        # top - row == 0
+        if c1 == 'top':
+            row = 0
+        # bottom - row == 7
+        elif c1 == 'bottom':
+            row = 7
+        # right - col == 7
+        elif c1 == 'right':
+            col = 7
+        # left - col == 0
+        elif c1 == 'left':
+            col = 0
+
         while True:
-            row = int(input("Select a row: "))
-            col = int(input("Select a col: "))
-            if row < self.boardSize-1 and col < self.boardSize-1:
+            pos = input("Choose your position (0 - 7): ")
+            if pos < self.boardSize:
                 return row, col
             else:
                 print("Error: Invalid entry.")
@@ -136,9 +149,9 @@ class Game:
 
         # miss
         def miss():
-            for i in range(self.boardSize-1):
+            #for i in range(self.boardSize-1):
 
-            return True, exit
+            return True
 
         # detour
         def detour():
