@@ -145,193 +145,20 @@ class Game:
                 pos = None
                 print("Error: Invalid entry.")
 
-    # list of nodes along the path of ray
-    def rayPath(self, start, board):
-        path = []
-        currNode = None
-        currPos = 0
-        exit = False
-        
-        def moveUp(node):
-            row = node[0]
-            col = node[1]
-            return row-1, col
+    def surrVals(self, currPos, board):
+        row = currPos[0]
+        col = currPos[1]
+        # indices surrounding currPos [up, down, left, right]
+        I = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
+        # indices [up-left, up-right, down-left, down-right]
+        II = [(row-1, col-1), (row-1, col+1), (row+1, col-1), (row+1, col+1)]
+        # values surrounding currPos
+        surr = [[board[II[0][0]][II[0][1]], board[I[0][0]][I[0][1]], board[II[1][0]][II[1][1]]],
+                [board[I[2][0]][I[2][1]], board[row][col], board[I[3][0]][I[3][1]]],
+                [board[II[2][0]][II[2][1]], board[I[1][0]][I[1][1]], board[II[3][0]][II[3][1]]]
+                ]
+        return surr
 
-        def moveDown(node):
-            row = node[0]
-            col = node[1]
-            return row+1, col
-
-        def moveRight(node):
-            row = node[0]
-            col = node[1]
-            return row, col+1
-
-        def moveLeft(node):
-            row = node[0]
-            col = node[1]
-            return row, col-1
-        
-        while not exit:
-            
-            # moving down
-
-            # rays current position on board is start
-            if currPos == 0:
-                row = start[0]
-                col = start[1]
-
-                # starting space is empty
-                if board[row][col] == 0:
-                    path.append(start)
-                    currPos +=1
-
-                # starting space is a force field right above node (hit)
-                elif board[row][col] == 1 and board[row+1][col] == 2:
-                    path.append(start)
-                    # break loop
-                    exit = True
-
-                # starting space is occupied by a node (hit)
-                else:
-                    # break loop
-                    exit = True
-            # currPos != start (path array is not empty)
-            else:
-                row = path[currPos][0]
-                col = path[currPos][1]
-                print(row, col)
-
-
-            # moving down -- change row (increase)
-            # direct hit (node on edge of board)
-            if board[row][col] == 2:
-                return path
-            # able to occupy the first space but node is in next space
-            elif board[row+1][col] == 2:
-                row = (row, col)
-                currPos = (row, col)
-                path.append(currPos)
-                return path
-            
-            # reflection - to the right
-            if board[row][col] == 1 and board[row][col-1] == 2:
-                currPos = (row, col)
-                path.append(currPos)
-                return path
-            
-            # reflection - to the left
-            if board[row][col] == 1 and board[row][col+1] == 2:
-                col += 1
-                currPos = (row, col)
-                path.append(currPos) 
-
-            # deflection - right
-            if board[row][col] == 1 and board[row+1][col-1] == 2: 
-                col += 1
-                currPos = (row, col)
-                path.append(currPos) 
-            # deflection - left
-            if board[row][col] == 1 and board[row+1][col+1] == 2:
-                col -= 1
-                currPos = (row, col)
-                path.append(currPos)
-           
-
-
-           # -------------------------------------------------------
-            # moving up -- change row (decrease)
-            if row == self.boardSize-1:
-                # hit
-                if board[row][col] == 2 or board[row-1][col] == 2:
-                    return 0
-                
-                # reflection - to the right
-                if board[row][col] == 1 and board[row][col-1] == 2:
-                    return 0
-                
-                # reflection - to the left
-                if board[row][col] == 1 and board[row][col+1] == 2:
-                    return 0
-
-                # deflection - right
-                if board[row][col] == 1 and board[row-1][col-1] == 2:
-                    return 0
-                
-                # deflection - left
-                if board[row][col] == 1 and board[row-1][col+1] == 2:
-                    return 0
-
-            """# direction
-
-            # start from bottom -- change row (decrease)
-            elif row == self.boardSize-1:
-                if board[row][col] == 2:
-                    # hit
-                    path.append((row, col))
-                    return path
-                
-                if board[row][col] == 1 and board[row][col-1] == 2:
-                    # reflection
-                    return 0
-                
-                if board[row][col] == 1 and board[row][col+1] == 2:
-                    # reflection
-                    return 0
-                
-                if board[row][col] == 1 and board[row][col-1] == 2:
-                    # deflection
-                    return 0
-
-                if board[row][col] == 0:
-                    row += 1
-
-                    path.append((row, col))
-
-
-            # start from right -- change col (decrease)
-            
-
-            # start from left -- change col (increase)
-        return path"""
-        return 0
-
-    def rayExit(self):
-
-        #return row, col
-        return 0
-    
-    def interactions(self):
-        # hit
-        def hit():
-
-            return True
-
-        # deflection
-        def deflection():
-
-            return True
-
-        # reflection
-        def reflection():
-
-            return True
-
-        # double deflection
-        def doubDeflection():
-
-            return True
-
-        # miss
-        def miss():
-            #for i in range(self.boardSize-1):
-
-            return True
-
-        # detour
-        def detour():
-
-            return True
     
 
 
@@ -340,7 +167,9 @@ if __name__=="__main__":
     G = Game()
     board = G.gameBoard()
     ray = G.rayLocation()
-    path = G.rayPath(ray, board)
+    #path = G.rayPath(ray, board)
+    surr = G.surrVals()
     print(board)
     print(ray)
-    print(path)
+    #print(path)
+    print(surr)
