@@ -35,8 +35,7 @@ class Game:
                     else:
                         break
                 atoms.append(atom)
-
-        
+    
         # make force fields
         for a in atoms:
             row = a[0]
@@ -70,7 +69,6 @@ class Game:
                 b[row+1][col+1] = 1.0
                 b[row-1][col+1] = 1.0
                 b[row][col+1] = 1.0
-
             if row not in (0, self.boardSize-1) and col == self.boardSize-1:
                 b[row+1][col-1] = 1.0
                 b[row-1][col-1] = 1.0
@@ -81,17 +79,14 @@ class Game:
                 b[row][col+1] = 1.0
                 b[row+1][col+1] = 1.0
                 b[row+1][col] = 1.0
-
             if row == self.boardSize-1 and col == 0:
                 b[row][col+1] = 1.0
                 b[row-1][col+1] = 1.0
                 b[row-1][col] = 1.0
-            
             if row == 0 and col == self.boardSize-1:
                 b[row][col-1] = 1.0
                 b[row+1][col] = 1.0
                 b[row+1][col-1] = 1.0
-            
             if row == self.boardSize-1 and col == self.boardSize-1:
                 b[row][col-1] = 1.0
                 b[row-1][col-1] = 1.0
@@ -102,8 +97,10 @@ class Game:
             row=a[0]
             col=a[1]
             b[row][col] = 2.0
+
+        board = np.array(b)
         
-        return np.array(b), atoms
+        return board, atoms
 
 
 
@@ -135,10 +132,8 @@ class Game:
 
         while pos == None:
             pos = input("Choose your position (0 - 7): ")
-            
             if pos.isdigit():
                 pos = int(pos)
-                
                 if pos < self.boardSize and col != None:
                     return pos, col
                 elif pos < self.boardSize and row != None:
@@ -146,37 +141,73 @@ class Game:
                 else:
                     pos = None
                     print("Error: Invalid entry.")
-
             else:
-                print("Error: Invalid entry.")
                 pos = None
+                print("Error: Invalid entry.")
 
     # list of nodes along the path of ray
     def rayPath(self, start, board):
         path = [start]
         currNode = None
-        for i in range(self.boardSize**2):
-            row = path[i][0]
-            col = path[i][1]
+        currPos = 0
+        exit = False
+        
+        while not exit:
+            # rays current position on board
+            row = path[currPos][0]
+            col = path[currPos][1]
+            print(row, col)
 
-            # direction
-            # start from top -- change row (increase)
+            #if currNode!= None:
+            #    pass
+            #else:
+            #    exit = True
+
+            # moving down -- change row (increase)
             if row == 0:
                 # hit
-                if board[row][col] == 2 or (board[row][col-1] == 1 and board[row][col+1] == 1):
+                if board[row][col] == 2 or board[row+1][col] == 2:
                     return 0
                 
-                # reflection
+                # reflection - to the right
                 if board[row][col] == 1 and board[row][col-1] == 2:
                     return 0
                 
-                # reflection
+                # reflection - to the left
                 if board[row][col] == 1 and board[row][col+1] == 2:
                     return 0
 
-                # deflection
+                # deflection - right
+                if board[row][col] == 1 and board[row+1][col-1] == 2:
+                    return 0
+                
+                # deflection - left
+                if board[row][col] == 1 and board[row+1][col+1] == 2:
+                    return 0
+            
+            # moving up -- change row (decrease)
+            if row == self.boardSize-1:
+                # hit
+                if board[row][col] == 2 or board[row+1][col] == 2:
+                    return 0
+                
+                # reflection - to the right
                 if board[row][col] == 1 and board[row][col-1] == 2:
                     return 0
+                
+                # reflection - to the left
+                if board[row][col] == 1 and board[row][col+1] == 2:
+                    return 0
+
+                # deflection - right
+                if board[row][col] == 1 and board[row+1][col-1] == 2:
+                    return 0
+                
+                # deflection - left
+                if board[row][col] == 1 and board[row+1][col+1] == 2:
+                    return 0
+
+            """# direction
 
             # start from bottom -- change row (decrease)
             elif row == self.boardSize-1:
@@ -207,15 +238,8 @@ class Game:
             
 
             # start from left -- change col (increase)
-
-
-
-
-
-
-
-
-        return path
+        return path"""
+        return 0
 
     def rayExit(self):
 
@@ -260,6 +284,8 @@ class Game:
 if __name__=="__main__":
     G = Game()
     board = G.gameBoard()
-    #ray = G.rayLocation()
+    ray = G.rayLocation()
+    path = G.rayPath(ray, board)
     print(board)
-    #print(ray)
+    print(ray)
+    print(path)
