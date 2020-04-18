@@ -153,12 +153,32 @@ class Game:
             # start from top -- change row (increase)
             if row == 0:
                 if board[row][col] == 2:
-                if board[row][col] == 1:
-                    if board[row][col+1] != 0:
-
-                    elif board[row][col-1] != 0:
-
-
+                    # hit
+                    return 0
+                if board[row][col] == 1 and board[row][col-1] == 2:
+                    # reflection
+                    return 0 
+                if board[row][col] == 1 and board[row][col+1] == 2:
+                    # reflection
+                    return 0
+                if board[row][col] == 1 and board[row][col-1] == 2:
+                    # deflection
+                    return 0
+            
+            elif row == self.boardSize-1:
+                if board[row][col] == 2:
+                    # hit
+                    path.append((row, col))
+                    return path
+                if board[row][col] == 1 and board[row][col-1] == 2:
+                    # reflection
+                    return 0 
+                if board[row][col] == 1 and board[row][col+1] == 2:
+                    # reflection
+                    return 0
+                if board[row][col] == 1 and board[row][col-1] == 2:
+                    # deflection
+                    return 0
 
                 if board[row][col] == 0:
                     row += 1
