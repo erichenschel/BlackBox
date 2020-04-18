@@ -6,7 +6,7 @@ class Game:
     def __init__(self):
         self.boardSize = 8
         self.numAtoms = 4
-        random.seed(6)
+        #random.seed(6)
 
         
     # m x n matrix w/ rows=m, cols=n
@@ -20,12 +20,22 @@ class Game:
 
     def gameBoard(self):
         b = self.blankBoard()
-        # place atoms
-        atoms = []
-        for i in range(self.numAtoms):
+        # place first atom
+        atoms = [self.placeAtom()]
+        # populate atoms array with numAtoms
+        while len(atoms) < self.numAtoms:
+            # place next atom
             atom = self.placeAtom()
             row, col = atom[0], atom[1]
-            atoms.append(atom)
+            # check that distance between new atom and existing atoms is at least 1 due to force fields
+            if len(atoms) >= 1:
+                for a in atoms:
+                    if row - a[0] > 1 and col - a[1] > 1:
+                        pass
+                    else:
+                        break
+                atoms.append(atom)
+
         
         # make force fields
         for a in atoms:
@@ -152,30 +162,37 @@ class Game:
             # direction
             # start from top -- change row (increase)
             if row == 0:
-                if board[row][col] == 2:
-                    # hit
+                # hit
+                if board[row][col] == 2 or (board[row][col-1] == 1 and board[row][col+1] == 1):
                     return 0
+                
+                # reflection
                 if board[row][col] == 1 and board[row][col-1] == 2:
-                    # reflection
-                    return 0 
+                    return 0
+                
+                # reflection
                 if board[row][col] == 1 and board[row][col+1] == 2:
-                    # reflection
                     return 0
+
+                # deflection
                 if board[row][col] == 1 and board[row][col-1] == 2:
-                    # deflection
                     return 0
-            
+
+            # start from bottom -- change row (decrease)
             elif row == self.boardSize-1:
                 if board[row][col] == 2:
                     # hit
                     path.append((row, col))
                     return path
+                
                 if board[row][col] == 1 and board[row][col-1] == 2:
                     # reflection
-                    return 0 
+                    return 0
+                
                 if board[row][col] == 1 and board[row][col+1] == 2:
                     # reflection
                     return 0
+                
                 if board[row][col] == 1 and board[row][col-1] == 2:
                     # deflection
                     return 0
@@ -186,11 +203,9 @@ class Game:
                     path.append((row, col))
 
 
-
-            # start from bottom -- change row (decrease)
-            
             # start from right -- change col (decrease)
             
+
             # start from left -- change col (increase)
 
 
@@ -245,6 +260,6 @@ class Game:
 if __name__=="__main__":
     G = Game()
     board = G.gameBoard()
-    ray = G.rayLocation()
+    #ray = G.rayLocation()
     print(board)
-    print(ray)
+    #print(ray)
