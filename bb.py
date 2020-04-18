@@ -165,20 +165,20 @@ class Game:
             # indices [up-right, up, up-left]
             I = [(row-1, col-1), (row-1, col), (row-1, col+1)]
             # indices [left, right]
-            II = [(row, col-1), 1, (row, col+1)]
+            II = [(row, col-1), (row, col), (row, col+1)]
             # indices [down-left, down, down-right]
             III = [(row+1, col-1), (row+1, col), (row+1, col+1)]
             
             arr = [I, II, III]
             tmp = []
             surr = []
-            for a in arr:
-                for i in a:
-                    tmp.append(board[i[0]][i[1]])
+            for i in arr:
+                for row, col in i:
+                    tmp.append(board[row][col])
                 surr.append(tmp)
                 tmp = []
 
-            return surr
+            return np.array(surr)
 
 """
         # condition 2: row in (0, 7) col not in (0, 7) -------------------------------------------
@@ -257,10 +257,9 @@ class Game:
 if __name__=="__main__":
     G = Game()
     board = G.gameBoard()
-    start = G.rayStart()
-    d = G.initDirection(start)
-    surr = G.surroundings(start)
     print(board)
-    print(start)
-    print(d)
+    start = G.rayStart()
+    print('start', start)
+    #d = G.initDirection(start)
+    surr = G.surroundings((4, 5))
     print(surr)
