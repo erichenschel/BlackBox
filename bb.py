@@ -125,17 +125,37 @@ class Game:
 
         while pos == None:
             pos = input("Choose your position (0 - 7): ")
-            if pos == int(pos):
-                pos = int(pos)
             
-            if pos > self.boardSize-1:
-                print("Error: Invalid entry.") 
-            elif pos < self.boardSize and col != None:
-                return pos, col
-            elif pos < self.boardSize and row != None:
-                return row, pos
+            if pos.isdigit():
+                pos = int(pos)
+                
+                if pos < self.boardSize and col != None:
+                    return pos, col
+                elif pos < self.boardSize and row != None:
+                    return row, pos
+                else:
+                    pos = None
+                    print("Error: Invalid entry.")
+
             else:
+                print("Error: Invalid entry.")
                 pos = None
+
+    # list of nodes along the path of ray
+    def rayPath(self, start):
+        path = [start]
+        while path != []:
+
+
+
+
+
+
+
+
+
+
+        return path
 
     def rayExit(self):
 
