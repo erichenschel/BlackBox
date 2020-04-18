@@ -5,7 +5,7 @@ class Game:
     def __init__(self):
         self.boardSize = 8
         self.numAtoms = 4
-        #random.seed(6)
+        random.seed(6)
 
         
     # m x n matrix w/ rows=m, cols=n
@@ -34,63 +34,7 @@ class Game:
                     else:
                         break
                 atoms.append(atom)
-    
-        # make force fields
-        for a in atoms:
-            row = a[0]
-            col = a[1]
-            
-            # condition 1: row not in (0,7) and col not in (0, 7) ------------------------------------
-            if row not in (0, self.boardSize-1):
-                b[row+1][col] = 1.0
-                b[row-1][col] = 1.0  
-            if row not in (0, self.boardSize-1) and col not in (0, self.boardSize-1):
-                b[row+1][col+1] = 1.0
-                b[row-1][col+1] = 1.0
-                b[row+1][col-1] = 1.0
-                b[row-1][col-1] = 1.0
-            if col not in (0, self.boardSize-1):
-                b[row][col+1] = 1.0
-                b[row][col-1] = 1.0
 
-            # condition 2: row in (0, 7) col not in (0, 7) -------------------------------------------
-            if row == 0 and col not in (0, self.boardSize-1): 
-                b[row+1][col+1] = 1.0
-                b[row+1][col-1] = 1.0
-                b[row+1][col] = 1.0
-            if row == self.boardSize-1 and col not in (0, self.boardSize-1):
-                b[row-1][col+1] = 1.0
-                b[row-1][col-1] = 1.0
-                b[row-1][col] = 1.0
-
-            # condition 3: row not in (0, 7) col in (0, 7) -------------------------------------------
-            if row not in (0, self.boardSize-1) and col == 0:
-                b[row+1][col+1] = 1.0
-                b[row-1][col+1] = 1.0
-                b[row][col+1] = 1.0
-            if row not in (0, self.boardSize-1) and col == self.boardSize-1:
-                b[row+1][col-1] = 1.0
-                b[row-1][col-1] = 1.0
-                b[row][col-1] = 1.0
-                
-            # condition 4: row in (0, 7) col in (0, 7) ---------------------------------------------
-            if row == 0 and col == 0:
-                b[row][col+1] = 1.0
-                b[row+1][col+1] = 1.0
-                b[row+1][col] = 1.0
-            if row == self.boardSize-1 and col == 0:
-                b[row][col+1] = 1.0
-                b[row-1][col+1] = 1.0
-                b[row-1][col] = 1.0
-            if row == 0 and col == self.boardSize-1:
-                b[row][col-1] = 1.0
-                b[row+1][col] = 1.0
-                b[row+1][col-1] = 1.0
-            if row == self.boardSize-1 and col == self.boardSize-1:
-                b[row][col-1] = 1.0
-                b[row-1][col-1] = 1.0
-                b[row-1][col] = 1.0
-                
         for a in atoms:
             print(a)
             row=a[0]
@@ -98,6 +42,7 @@ class Game:
             b[row][col] = 2.0
 
         board = np.array(b)
+        #board = b
         
         return board, atoms
 
@@ -156,7 +101,7 @@ class Game:
 
 
     def surroundings(self, currPos):
-        board = self.gameBoard()[0]
+        board = self.gameBoard()[0].tolist()
         row = currPos[0]
         col = currPos[1]
 
@@ -168,13 +113,23 @@ class Game:
             II = [(row, col-1), (row, col), (row, col+1)]
             # indices [down-left, down, down-right]
             III = [(row+1, col-1), (row+1, col), (row+1, col+1)]
+            print(I)
+            print(II)
+            print(III)
             
             arr = [I, II, III]
             tmp = []
             surr = []
             for i in arr:
-                for row, col in i:
-                    tmp.append(board[row][col])
+                print(i)
+                for r, c in i:
+                    print(r, c)
+                    if r == row and c == col:
+                        tmp.append(7)
+                    else:
+                        v = board[r][c]
+                        print(v)
+                        tmp.append(v)
                 surr.append(tmp)
                 tmp = []
 
@@ -261,5 +216,5 @@ if __name__=="__main__":
     start = G.rayStart()
     print('start', start)
     #d = G.initDirection(start)
-    surr = G.surroundings((4, 5))
+    surr = G.surroundings((2, 6))
     print(surr)
