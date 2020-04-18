@@ -142,13 +142,30 @@ class Game:
                 pos = None
 
     # list of nodes along the path of ray
-    def rayPath(self, start):
+    def rayPath(self, start, board):
         path = [start]
-        while path != []:
+        currNode = None
+        for i in range(self.boardSize**2):
+            row = path[i][0]
+            col = path[i][1]
 
             # direction
             # start from top -- change row (increase)
-            
+            if row == 0:
+                if board[row][col] == 2:
+                if board[row][col] == 1:
+                    if board[row][col+1] != 0:
+
+                    elif board[row][col-1] != 0:
+
+
+
+                if board[row][col] == 0:
+                    row += 1
+
+                    path.append((row, col))
+
+
 
             # start from bottom -- change row (decrease)
             
