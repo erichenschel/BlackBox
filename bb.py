@@ -152,31 +152,31 @@ class Game:
         currPos = 0
         exit = False
         
+        def moveUp(node):
+            row = node[0]
+            col = node[1]
+            return row-1, col
+
+        def moveDown(node):
+            row = node[0]
+            col = node[1]
+            return row+1, col
+
+        def moveRight(node):
+            row = node[0]
+            col = node[1]
+            return row, col+1
+
+        def moveLeft(node):
+            row = node[0]
+            col = node[1]
+            return row, col-1
+        
         while not exit:
             # rays current position on board
             row = path[currPos][0]
             col = path[currPos][1]
             print(row, col)
-
-
-        def moveUp(node):
-            row = node[0]
-            col = node[1]
-            return row-1, col
-        def moveDown(node):
-            row = node[0]
-            col = node[1]
-            return row+1, col
-        def moveRight(node):
-            row = node[0]
-            col = node[1]
-            return row, col+1
-        def moveLeft(node):
-            row = node[0]
-            col = node[1]
-            return row, col-1
-
-
 
             # moving down -- change row (increase)
             if row == 0:
