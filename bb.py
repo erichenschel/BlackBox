@@ -1,7 +1,6 @@
 import numpy as np
 import random
 
-
 class Game:
     def __init__(self):
         self.boardSize = 8
@@ -102,6 +101,60 @@ class Game:
         
         return board, atoms
 
+    # have user choose at which (row, col) to shoot a ray
+    def rayStart(self):
+        col = None
+        row = None
+
+        c1 = None
+        pos = None
+
+        while c1 == None:
+            c1 = input("Select a firing position (top, bottom, right, left): ")
+            # top - row == 0
+            if c1 == 'top':
+                row = 0
+            # bottom - row == 7
+            elif c1 == 'bottom':
+                row = 7
+            # right - col == 7
+            elif c1 == 'right':
+                col = 7
+            # left - col == 0
+            elif c1 == 'left':
+                col = 0
+            else:
+                c1 = None
+                print("Error: Invalid entry.")
+
+        while pos == None:
+            pos = input("Choose your position (0 - 7): ")
+            if pos.isdigit():
+                pos = int(pos)
+                if pos < self.boardSize and col != None:
+                    return pos, col
+                elif pos < self.boardSize and row != None:
+                    return row, pos
+                else:
+                    pos = None
+                    print("Error: Invalid entry.")
+            else:
+                pos = None
+                print("Error: Invalid entry.")
+
+
+    def initDirection(self, start):
+        if start[0] == 0:
+            return 'Down'
+        elif start[0] == self.boardSize-1:
+            return 'Up'
+        elif start[1] == 0:
+            return 'Right'
+        elif start[1] == self.boardSize-1:
+            return 'Left'
+
+
+
     def surroundings(self, currPos):
         board = self.gameBoard()[0]
         row = currPos[0]
@@ -115,40 +168,19 @@ class Game:
             II = [(row, col-1), 1, (row, col+1)]
             # indices [down-left, down, down-right]
             III = [(row+1, col-1), (row+1, col), (row+1, col+1)]
+            
+            arr = [I, II, III]
+            tmp = []
+            surr = []
+            for a in arr:
+                for i in a:
+                    tmp.append(board[i[0]][i[1]])
+                surr.append(tmp)
+                tmp = []
 
+            return surr
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+"""
         # condition 2: row in (0, 7) col not in (0, 7) -------------------------------------------
         if row == 0:
             # indices surrounding currPos [(up), down, left, right]
@@ -218,7 +250,7 @@ class Game:
                 ]
 
         return surr
-
+"""
 
 
 
@@ -227,6 +259,8 @@ if __name__=="__main__":
     board = G.gameBoard()
     start = G.rayStart()
     d = G.initDirection(start)
+    surr = G.surroundings(start)
     print(board)
     print(start)
     print(d)
+    print(surr)
