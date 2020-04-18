@@ -99,6 +99,8 @@ class Game:
 
     # have user choose at which (row, col) to shoot a ray
     def rayLocation(self):
+        col = None
+        row = None
         c1 = input("Select a firing position (top, bottom, right, left): ")
         # top - row == 0
         if c1 == 'top':
@@ -114,12 +116,15 @@ class Game:
             col = 0
 
         while True:
-            pos = input("Choose your position (0 - 7): ")
-            if pos < self.boardSize:
-                return row, col
-            else:
+            pos = int(input("Choose your position (0 - 7): "))
+            if pos > self.boardSize-1:
                 print("Error: Invalid entry.")
                 print("Please select an integer between 0 and ", self.boardSize-1)
+            
+            if pos < self.boardSize and col != None:
+                return pos, col
+            elif pos < self.boardSize and row != None:
+                return row, pos
 
     def rayExit(self):
 
@@ -164,6 +169,6 @@ class Game:
 if __name__=="__main__":
     G = Game()
     board = G.gameBoard()
-    #ray = G.rayEntry()
+    ray = G.rayLocation()
     print(board)
-    #print(ray)
+    print(ray)
