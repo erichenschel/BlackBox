@@ -6,10 +6,11 @@ def surrNode(currPos, board):
     col = currPos[1]
     
     # condition 1: row not in (0,7) and col not in (0, 7) ------------------------------------
-    # indices surrounding currPos [up, down, left, right]
-    I = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
-    # indices [up-left, up-right, down-left, down-right]
-    II = [(row-1, col-1), (row-1, col+1), (row+1, col-1), (row+1, col+1)]
+    if row not in (0, self.boardSize-1) and col not in (0, self.boardSize-1):    
+        # indices surrounding currPos [up, down, left, right]
+        I = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
+        # indices [up-left, up-right, down-left, down-right]
+        II = [(row-1, col-1), (row-1, col+1), (row+1, col-1), (row+1, col+1)]
     
     # condition 2: row in (0, 7) col not in (0, 7) -------------------------------------------
     if row == 0:
@@ -17,23 +18,45 @@ def surrNode(currPos, board):
         I = [None, (row+1, col), (row, col-1), (row, col+1)]
         # indices [(up-left), (up-right), down-left, down-right]
         II = [None, None, (row+1, col-1), (row+1, col+1)]
-    if row == self.boardSize:
+    elif row == self.boardSize-1:
         # indices surrounding currPos [up, (down), left, right]
         I = [(row-1, col), None, (row, col-1), (row, col+1)]
         # indices [up-left, up-right, (down-left), (down-right)]
         II = [(row-1, col-1), (row-1, col+1), None, None]
     
-    # condition 1: row not in (0,7) and col not in (0, 7) ------------------------------------
-    # indices surrounding currPos [up, down, left, right]
-    I = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
-    # indices [up-left, up-right, down-left, down-right]
-    II = [(row-1, col-1), (row-1, col+1), (row+1, col-1), (row+1, col+1)]
+    # condition 3: row not in (0, 7) col in (0, 7) -------------------------------------------
+    if col == 0:
+        # indices surrounding currPos [up, down, (left), right]
+        I = [(row-1, col), (row+1, col), None, (row, col+1)]
+        # indices [(up-left), up-right, (down-left), down-right]
+        II = [None, (row-1, col+1), None, (row+1, col+1)]
+    elif col == self.boardSize-1:
+        # indices surrounding currPos [up, down, left, (right)]
+        I = [(row-1, col), (row+1, col), (row, col-1), None]
+        # indices [up-left, (up-right), down-left, (down-right)]
+        II = [(row-1, col-1), None, (row+1, col-1), None]
     
-    # condition 1: row not in (0,7) and col not in (0, 7) ------------------------------------
-    # indices surrounding currPos [up, down, left, right]
-    I = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
-    # indices [up-left, up-right, down-left, down-right]
-    II = [(row-1, col-1), (row-1, col+1), (row+1, col-1), (row+1, col+1)]
+    # condition 4: row in (0, 7) col in (0, 7) ---------------------------------------------
+    if row == 0 and col == 0:
+        # indices surrounding currPos [(up), down, (left), right]
+        I = [None, (row+1, col), None, (row, col+1)]
+        # indices [(up-left), (up-right), (down-left), down-right]
+        II = [None, None, None, (row+1, col+1)]
+    elif row == self.boardSize-1 and col == 0:
+        # indices surrounding currPos [up, (down), (left), right]
+        I = [(row-1, col), None, None, (row, col+1)]
+        # indices [(up-left), up-right, (down-left), (down-right)]
+        II = [None, (row-1, col+1), None, None]
+    elif row == 0 and col == self.boardSize-1:
+        # indices surrounding currPos [(up), down, left, (right)]
+        I = [None, (row+1, col), (row, col-1), None]
+        # indices [(up-left), (up-right), down-left, (down-right)]
+        II = [None, None, (row+1, col-1), None]
+    elif row == self.boardSize-1 and col == self.boardSize-1:
+        # indices surrounding currPos [(up), down, (left), right]
+        I = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
+        # indices [(up-left), (up-right), (down-left), down-right]
+        II = [(row-1, col-1), (row-1, col+1), (row+1, col-1), (row+1, col+1)]
 
 
 
@@ -47,34 +70,3 @@ def surrNode(currPos, board):
    
 
 
-# condition 3: row not in (0, 7) col in (0, 7) -------------------------------------------
-            if row not in (0, self.boardSize-1) and col == 0:
-                b[row+1][col+1] = 1.0
-                b[row-1][col+1] = 1.0
-                b[row][col+1] = 1.0
-            if row not in (0, self.boardSize-1) and col == self.boardSize-1:
-                b[row+1][col-1] = 1.0
-                b[row-1][col-1] = 1.0
-                b[row][col-1] = 1.0
-
-
-
-
-
-# condition 4: row in (0, 7) col in (0, 7) ---------------------------------------------
-            if row == 0 and col == 0:
-                b[row][col+1] = 1.0
-                b[row+1][col+1] = 1.0
-                b[row+1][col] = 1.0
-            if row == self.boardSize-1 and col == 0:
-                b[row][col+1] = 1.0
-                b[row-1][col+1] = 1.0
-                b[row-1][col] = 1.0
-            if row == 0 and col == self.boardSize-1:
-                b[row][col-1] = 1.0
-                b[row+1][col] = 1.0
-                b[row+1][col-1] = 1.0
-            if row == self.boardSize-1 and col == self.boardSize-1:
-                b[row][col-1] = 1.0
-                b[row-1][col-1] = 1.0
-                b[row-1][col] = 1.0
