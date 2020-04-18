@@ -158,10 +158,25 @@ class Game:
             col = path[currPos][1]
             print(row, col)
 
-            #if currNode!= None:
-            #    pass
-            #else:
-            #    exit = True
+
+        def moveUp(node):
+            row = node[0]
+            col = node[1]
+            return row-1, col
+        def moveDown(node):
+            row = node[0]
+            col = node[1]
+            return row+1, col
+        def moveRight(node):
+            row = node[0]
+            col = node[1]
+            return row, col+1
+        def moveLeft(node):
+            row = node[0]
+            col = node[1]
+            return row, col-1
+
+
 
             # moving down -- change row (increase)
             if row == 0:
@@ -188,7 +203,7 @@ class Game:
             # moving up -- change row (decrease)
             if row == self.boardSize-1:
                 # hit
-                if board[row][col] == 2 or board[row+1][col] == 2:
+                if board[row][col] == 2 or board[row-1][col] == 2:
                     return 0
                 
                 # reflection - to the right
@@ -200,11 +215,11 @@ class Game:
                     return 0
 
                 # deflection - right
-                if board[row][col] == 1 and board[row+1][col-1] == 2:
+                if board[row][col] == 1 and board[row-1][col-1] == 2:
                     return 0
                 
                 # deflection - left
-                if board[row][col] == 1 and board[row+1][col+1] == 2:
+                if board[row][col] == 1 and board[row-1][col+1] == 2:
                     return 0
 
             """# direction
