@@ -227,13 +227,14 @@ class Game:
 
             r, c = currPos
             if r < self.boardSize and c < self.boardSize and r >= 0 and c >=0:
-                path.append(currPos)
 
                 # check for initial edge node hits - cond 2
                 if self.hasHitAtom(currPos, board):
                     exited = self.hasHitAtom(currPos, board)
+                    path.append(('hit', currPos))
                     return path
                     
+                path.append(currPos)
 
                 # check for reflections from edge nodes - cond 7
                 if self.isReflection(currPos, board, d):
