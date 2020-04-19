@@ -185,17 +185,20 @@ class Game:
             tmp = []
             surr = []
             for i in arr:
-                for r, c in i:
-                    v = board[r][c]
+                for pair in i:
+                    if pair != None:
+                        r, c = pair
+                        v = board[r][c]
                         if r == row and c == col and v != 2:
                             tmp.append(7)
                         else:
                             tmp.append(v)
+                    
                     # off board val == 5
                     else:
                         tmp.append(5)
-                surr.append(tmp)
-                tmp = []
+                    surr.append(tmp)
+                    tmp = []
 
             return np.array(surr)
 
