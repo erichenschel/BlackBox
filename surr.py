@@ -96,11 +96,12 @@ def surroundings(currPos, board):
         for pair in i:
             if pair != None:
                 r, c = pair
-                v = board[r][c]
-                if r == row and c == col and v != 2:
-                    tmp.append(7)
-                else:
-                    tmp.append(v)
+                if r < bSize and r >= 0 and c < bSize and c >= 0:
+                    v = board[r][c]
+                    if r == row and c == col and v != 2:
+                        tmp.append(7)
+                    else:
+                        tmp.append(v)
 
             # off board val == 5
             else:

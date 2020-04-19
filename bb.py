@@ -126,8 +126,6 @@ class Game:
     # check for initial edge node hits - cond 2
     def hasHitAtom(self, currPos, board, path):
         S = surr(currPos, board)
-        print(S[2][1])
-        print(currPos)
         if d == 'down' and S[2][1] == 2:
             path.append(currPos)
             return path
@@ -157,17 +155,17 @@ class Game:
 
 
     # check for right turn condition - cond 3
-    def isRightTurn(self, currPos, board):
+    def isRightTurn(self, currPos, board, d):
         if d == 'up' and surr(currPos, board)[0][0] == 2:
             return self.stepRight(currPos)
-        elif d == 'down' and surr(currPos, board)[0][2] == 2:
+        elif d == 'down' and surr(currPos, board)[2][0] == 2:
             return self.stepRight(currPos)
         else:
             return False
     
 
     # check for left turn condition - cond 4
-    def isLeftTurn(self, currPos, board):
+    def isLeftTurn(self, currPos, board, d):
         if d == 'up' and surr(currPos, board)[0][2] == 2:
             return self.stepLeft(currPos)
         elif d == 'down' and surr(currPos, board)[2][2] == 2:
@@ -177,7 +175,7 @@ class Game:
     
     
     # check for up turn condition - cond 5
-    def isUpTurn(self, currPos, board):
+    def isUpTurn(self, currPos, board, d):
         if d == 'right' and surr(currPos, board)[2][2] == 2:
             return self.stepUp(currPos)
         elif d == 'left' and surr(currPos, board)[2][0] == 2:
@@ -187,7 +185,7 @@ class Game:
 
 
     # check for down turn condition - cond 6
-    def isDownTurn(self, currPos, board):
+    def isDownTurn(self, currPos, board, d):
         if d == 'right' and surr(currPos, board)[0][2] == 2:
             return self.stepDown(currPos)
         elif d == 'left' and surr(currPos, board)[0][0] == 2:
@@ -207,35 +205,35 @@ class Game:
 
         while not exited:
 
-            # check for initial edge node hits - cond 2
-            if self.hasHitAtom(currPos, board, path) != False:
-                return self.hasHitAtom(currPos, board, path) 
-
             r, c = currPos
             if r < self.boardSize and c < self.boardSize and r >= 0 and c >=0:
                 path.append(currPos)
             else:
-                exited = True
-                return path
+                return path, d
+
+            # check for initial edge node hits - cond 2
+            if self.hasHitAtom(currPos, board, path) != False:
+                return self.hasHitAtom(currPos, board, path) 
+
 
             # check for right turn condition - cond 3
-            if self.isRightTurn(currPos, board) != False:
-                currPos, d = self.isRightTurn(currPos, board)
+            if self.isRightTurn(currPos, board, d) != False:
+                currPos, d = self.isRightTurn(currPos, board, d)
                 pass
 
             # check for left turn condition - cond 4
-            elif self.isLeftTurn(currPos, board) != False:
-                currPos, d = self.isLeftTurn(currPos, board)
+            elif self.isLeftTurn(currPos, board, d) != False:
+                currPos, d = self.isLeftTurn(currPos, board, d)
                 pass
 
             # check for up turn condition - cond 5
-            elif self.isUpTurn(currPos, board) != False:
-                currPos, d = self.isUpTurn(currPos, board)
+            elif self.isUpTurn(currPos, board, d) != False:
+                currPos, d = self.isUpTurn(currPos, board, d)
                 pass
 
             # check for down turn condition - cond 6
-            elif self.isDownTurn(currPos, board) != False:
-                currPos, d = self.isDownTurn(currPos, board)
+            elif self.isDownTurn(currPos, board, d) != False:
+                currPos, d = self.isDownTurn(currPos, board, d)
                 pass
 
             # step forward algo - cond 1
