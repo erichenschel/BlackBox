@@ -36,13 +36,11 @@ class Game:
                 atoms.append(atom)
 
         for a in atoms:
-            print(a)
             row=a[0]
             col=a[1]
             b[row][col] = 2.0
 
         board = np.array(b)
-        #board = b
         
         return board, atoms
 
@@ -101,65 +99,133 @@ class Game:
 
 
     def surroundings(self, currPos):
-        board = self.gameBoard()[0].tolist()
+        board = self.gameBoard()[0]
+        print(board)
         row = currPos[0]
         col = currPos[1]
 
         # condition 1: row not in (0,7) and col not in (0, 7) ------------------------------------
         if row not in (0, self.boardSize-1) and col not in (0, self.boardSize-1):
-            # indices [up-right, up, up-left]
+            # indices [up-left, up, up-right]
             I = [(row-1, col-1), (row-1, col), (row-1, col+1)]
             # indices [left, right]
             II = [(row, col-1), (row, col), (row, col+1)]
             # indices [down-left, down, down-right]
             III = [(row+1, col-1), (row+1, col), (row+1, col+1)]
-            print(I)
-            print(II)
-            print(III)
             
             arr = [I, II, III]
             tmp = []
             surr = []
             for i in arr:
-                print(i)
                 for r, c in i:
-                    print(r, c)
                     if r == row and c == col:
                         tmp.append(7)
                     else:
                         v = board[r][c]
-                        print(v)
                         tmp.append(v)
                 surr.append(tmp)
                 tmp = []
 
             return np.array(surr)
 
-"""
         # condition 2: row in (0, 7) col not in (0, 7) -------------------------------------------
-        if row == 0:
-            # indices surrounding currPos [(up), down, left, right]
-            I = [None, (row+1, col), (row, col-1), (row, col+1)]
-            # indices [(up-left), (up-right), down-left, down-right]
-            II = [None, None, (row+1, col-1), (row+1, col+1)]
-        elif row == self.boardSize-1:
-            # indices surrounding currPos [up, (down), left, right]
-            I = [(row-1, col), None, (row, col-1), (row, col+1)]
-            # indices [up-left, up-right, (down-left), (down-right)]
-            II = [(row-1, col-1), (row-1, col+1), None, None]
+        if row == 0 and col not in (0, self.boardSize-1):
+            # indices [left, mid, right]
+            II = [(row, col-1), (row, col), (row, col+1)]
+            # indices [down-left, down, down-right]
+            III = [(row+1, col-1), (row+1, col), (row+1, col+1)]
+
+            arr = [II, III]
+            tmp = []
+            surr = []
+            for i in arr:
+                for r, c in i:
+                    if r == row and c == col:
+                        tmp.append(7)
+                    else:
+                        v = board[r][c]
+                        tmp.append(v)
+                surr.append(tmp)
+                tmp = []
+
+            return np.array(surr)
+        
+        elif row == self.boardSize-1 and col not in (0, self.boardSize-1):
+            # indices [up-left, up, up-right]
+            I = [(row-1, col-1), (row-1, col), (row-1, col+1)]
+            # indices [left, right]
+            II = [(row, col-1), (row, col), (row, col+1)]
+
+            arr = [I, II]
+            tmp = []
+            surr = []
+            for i in arr:
+                for r, c in i:
+                    v = board[r][c]
+                    if r == row and c == col and v != 2:
+                        tmp.append(7)
+                    else:
+                        tmp.append(v)
+                surr.append(tmp)
+                tmp = []
+
+            return np.array(surr)
+
 
         # condition 3: row not in (0, 7) col in (0, 7) -------------------------------------------
-        if col == 0:
-            # indices surrounding currPos [up, down, (left), right]
-            I = [(row-1, col), (row+1, col), None, (row, col+1)]
-            # indices [(up-left), up-right, (down-left), down-right]
-            II = [None, (row-1, col+1), None, (row+1, col+1)]
-        elif col == self.boardSize-1:
-            # indices surrounding currPos [up, down, left, (right)]
-            I = [(row-1, col), (row+1, col), (row, col-1), None]
-            # indices [up-left, (up-right), down-left, (down-right)]
-            II = [(row-1, col-1), None, (row+1, col-1), None]
+        if row not in (0, self.boardSize-1) and col == 0:
+            # indices [None, up, up-right]
+            I = [None, (row-1, col), (row-1, col+1)]
+            # indices [None, mid, right]
+            II = [None, (row, col), (row, col+1)]
+            # indices [None, down, down-right]
+            III = [None, (row+1, col), (row+1, col+1)]
 
+            arr = [I, II, III]
+            tmp = []
+            surr = []
+            for i in arr:
+                for r, c in i:
+                    v = board[r][c]
+                        if r == row and c == col and v != 2:
+                            tmp.append(7)
+                        else:
+                            tmp.append(v)
+                    # off board val == 5
+                    else:
+                        tmp.append(5)
+                surr.append(tmp)
+                tmp = []
+
+            return np.array(surr)
+
+        elif row not in (0, self.boardSize) and col == self.boardSize-1:
+            # indices [up-left, up, None]
+            I = [(row-1, col-1), (row-1, col), None]
+            # indices [left, mid, None]
+            II = [(row, col-1), (row, col), None]
+            # indices [down-left, down, None]
+            III = [(row+1, col-1), (row+1, col), None]
+
+            arr = [I, II, III]
+            tmp = []
+            surr = []
+            for i in arr:
+                for r, c in i:
+                    v = board[r][c]
+                    if v != None:
+                        if r == row and c == col and v != 2:
+                            tmp.append(7)
+                        else:
+                            tmp.append(v)
+                    # off board val == 5
+                    else:
+                        tmp.append(5)
+                surr.append(tmp)
+                tmp = []
+
+            return np.array(surr)
+"""
         # condition 4: row in (0, 7) col in (0, 7) ---------------------------------------------
         if row == 0 and col == 0:
             # indices surrounding currPos [(up), down, (left), right]
@@ -211,10 +277,10 @@ class Game:
 
 if __name__=="__main__":
     G = Game()
-    board = G.gameBoard()
-    print(board)
+    #board = G.gameBoard()
+    #print(board)
     start = G.rayStart()
     print('start', start)
     #d = G.initDirection(start)
-    surr = G.surroundings((2, 6))
+    surr = G.surroundings((4, 0))
     print(surr)
