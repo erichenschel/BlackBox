@@ -139,7 +139,7 @@ class Game:
         elif d == 'left' and surr(currPos, board)[1][0] == 2:
             path.append(start)
             return path
-        elif d == 'left' and surr(currPos, board)[1][1] ==2):
+        elif d == 'left' and surr(currPos, board)[1][1] ==2:
             return path
         
         elif d == 'right' and surr(currPos, board)[1][2] == 2:
@@ -147,6 +147,9 @@ class Game:
             return path
         elif d == 'right' and surr(currPos, board)[1][1] ==2:
             return path
+        
+        else:
+            return False
 
 
     # check for right turn condition - cond 3
@@ -162,9 +165,9 @@ class Game:
     # check for left turn condition - cond 4
     def isLeftTurn(self, currPos, board):
         if d == 'up' and surr(currPos, board)[0][2] == 2:
-            return stepRight(self, currPos)
+            return stepLeft(self, currPos)
         elif d == 'down' and surr(currPos, board)[2][2] == 2:
-            return stepRight(self, currPos)
+            return stepLeft(self, currPos)
         else:
             return False
     
@@ -172,9 +175,9 @@ class Game:
     # check for up turn condition - cond 5
     def isUpTurn(self, currPos, board):
         if d == 'right' and surr(currPos, board)[2][2] == 2:
-            return stepRight(self, currPos)
+            return stepUp(self, currPos)
         elif d == 'left' and surr(currPos, board)[2][0] == 2:
-            return stepRight(self, currPos)
+            return stepUp(self, currPos)
         else:
             return False
 
@@ -182,9 +185,9 @@ class Game:
     # check for down turn condition - cond 6
     def isDownTurn(self, currPos, board):
         if d == 'right' and surr(currPos, board)[0][2] == 2:
-            return stepRight(self, currPos)
+            return stepDown(self, currPos)
         elif d == 'left' and surr(currPos, board)[0][0] == 2:
-            return stepRight(self, currPos)
+            return stepDown(self, currPos)
         else:
             return False
         
@@ -197,21 +200,27 @@ class Game:
         row, col = start
         path = []
         currPos = start
-
-
-
-        # check for initial edge node hits - cond 2
-
-        # check for right turn condition - cond 3
-
-        # check for left turn condition - cond 4
-
-        # check for up turn condition - cond 5
-
-        # check for down turn condition - cond 6
+        exited = False
 
         # step forward algo - cond 1
-        while d == 'right':
+        while not exited:
+
+            # check for initial edge node hits - cond 2
+            if self.hasHitAtom(currPos, board) != False:
+            d = 
+
+            # check for right turn condition - cond 3
+            elif self.isRightTurn(currPos, board) != False:
+
+            # check for left turn condition - cond 4
+            elif self.isLeftTurn(currPos, board) != False:
+
+            # check for up turn condition - cond 5
+            elif self.isUpTurn(currPos, board) != False:
+
+            # check for down turn condition - cond 6
+            elif self.isDownTurn(currPos, board) != False:
+
             path.append(currPos)
 
 
