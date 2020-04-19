@@ -1,4 +1,3 @@
-import numpy as np
 import random
 from surr import surroundings
 
@@ -13,11 +12,13 @@ class Game:
     def blankBoard(self):
         return np.zeros((8, 8)).tolist()
 
+    # function to generate a random atom located on the grid
     def placeAtom(self):
         row = random.randint(0, self.boardSize-1)
         col = random.randint(0, self.boardSize-1)
         return row, col
-
+    
+    # have computer make a game board
     def gameBoard(self):
         b = self.blankBoard()
         # place first atom
@@ -27,7 +28,8 @@ class Game:
             # place next atom
             atom = self.placeAtom()
             row, col = atom[0], atom[1]
-            # check that distance between new atom and existing atoms is at least 1 due to force fields
+
+            # check that distance b/w atoms >= 1
             if len(atoms) >= 1:
                 for a in atoms:
                     if row - a[0] > 1 and col - a[1] > 1:
@@ -86,18 +88,38 @@ class Game:
                 pos = None
                 print("Error: Invalid entry.")
 
-
+    # function to determine initial direction from start
     def initDirection(self, start):
         if start[0] == 0:
-            return 'Down'
+            return 'down'
         elif start[0] == self.boardSize-1:
-            return 'Up'
+            return 'up'
         elif start[1] == 0:
-            return 'Right'
+            return 'right'
         elif start[1] == self.boardSize-1:
-            return 'Left'
+            return 'left'
 
-
+    # step functions that return nextPos and direction
+    def stepRight(self, currPos):
+        row, col = currPos
+        nextPos = (row, col+1)
+        direction = 'right'
+        return nextPos, direction
+    def stepLeft(self, currPos):
+        row, col = currPos
+        direction = 'left'
+        nextPos = (row, col-1)
+        return nextPos, direction
+    def stepUp(self, currPos):
+        row, col = currPos
+        direction = 'up'
+        nextPos = (row-1, col)
+        return nextPos, direction
+    def stepDown(self, currPos):
+        row, col = currPos
+        direction = 'down'
+        nextPos = (row+1, col)
+        return nextPos, direction
 
 
 if __name__=="__main__":
