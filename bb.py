@@ -117,12 +117,19 @@ class Game:
             tmp = []
             surr = []
             for i in arr:
-                for r, c in i:
-                    if r == row and c == col:
-                        tmp.append(7)
-                    else:
+                for pair in i:
+                    if pair != None:
+                        r, c = pair
                         v = board[r][c]
-                        tmp.append(v)
+                        if r == row and c == col:
+                            tmp.append(7)
+                        else:
+                            tmp.append(v)
+                    
+                    # off board val == 5
+                    else:
+                        tmp.append(5)
+
                 surr.append(tmp)
                 tmp = []
 
@@ -130,6 +137,8 @@ class Game:
 
         # condition 2: row in (0, 7) col not in (0, 7) -------------------------------------------
         if row == 0 and col not in (0, self.boardSize-1):
+            # off board indices
+            I = [None, None, None]
             # indices [left, mid, right]
             II = [(row, col-1), (row, col), (row, col+1)]
             # indices [down-left, down, down-right]
@@ -139,12 +148,19 @@ class Game:
             tmp = []
             surr = []
             for i in arr:
-                for r, c in i:
-                    if r == row and c == col:
-                        tmp.append(7)
-                    else:
+                for pair in i:
+                    if pair != None:
+                        r, c = pair
                         v = board[r][c]
-                        tmp.append(v)
+                        if r == row and c == col and v != 2:
+                            tmp.append(7)
+                        else:
+                            tmp.append(v)
+                    
+                    # off board val == 5
+                    else:
+                        tmp.append(5)
+
                 surr.append(tmp)
                 tmp = []
 
@@ -197,8 +213,8 @@ class Game:
                     # off board val == 5
                     else:
                         tmp.append(5)
-                    surr.append(tmp)
-                    tmp = []
+                surr.append(tmp)
+                tmp = []
 
             return np.array(surr)
 
@@ -214,13 +230,15 @@ class Game:
             tmp = []
             surr = []
             for i in arr:
-                for r, c in i:
-                    v = board[r][c]
-                    if v != None:
+                for pair in i:
+                    if pair != None:
+                        r, c = pair
+                        v = board[r][c]
                         if r == row and c == col and v != 2:
                             tmp.append(7)
                         else:
                             tmp.append(v)
+
                     # off board val == 5
                     else:
                         tmp.append(5)
