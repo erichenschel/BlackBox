@@ -1,5 +1,5 @@
 import random
-from surr import surroundings
+from surr import surroundings as surr
 
 class Game:
     def __init__(self):
@@ -99,7 +99,7 @@ class Game:
         elif start[1] == self.boardSize-1:
             return 'left'
 
-    # step functions that return nextPos and direction
+    # step functions that return nextPos of ray and direction
     def stepRight(self, currPos):
         row, col = currPos
         nextPos = (row, col+1)
@@ -121,6 +121,25 @@ class Game:
         nextPos = (row+1, col)
         return nextPos, direction
 
+    # function which returns the path a ray 
+    # takes from a starting place and initial
+    # direction for a given board
+    def path(self, start, direction, board):
+        d = direction
+        row, col = start
+        path = [start]
+
+        # check for initial edge node hits
+        if d == 'down' and (surr(currPos, board)[2][1] == 2 or surr(currPos, board)[1][1] == 2):
+            return print('hit')
+        elif d == 'up' and (surr(currPos, board)[0][1] == 2 or surr(currPos, board)[1][1] == 2):
+            return print('hit')
+
+
+
+
+
+        return path
 
 if __name__=="__main__":
     G = Game()
@@ -132,5 +151,5 @@ if __name__=="__main__":
     for i in range(8):
         for j in range(8):
             print((i, j))
-            surr = surroundings((i, j), board)
+            surr = surr((i, j), board)
             print(surr)
