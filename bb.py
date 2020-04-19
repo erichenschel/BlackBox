@@ -129,11 +129,41 @@ class Game:
         row, col = start
         path = [start]
 
-        # check for initial edge node hits
+        # check for initial edge node hits - cond 2
         if d == 'down' and (surr(currPos, board)[2][1] == 2 or surr(currPos, board)[1][1] == 2):
             return print('hit')
         elif d == 'up' and (surr(currPos, board)[0][1] == 2 or surr(currPos, board)[1][1] == 2):
             return print('hit')
+        elif d == 'left' and (surr(currPos, board)[1][0] == 2 or surr(currPos, board)[1][1] ==2):
+            return print('hit')
+        elif d == 'right' and (surr(currPos, board)[1][2] == 2 or surr(currPos, board)[1][1] ==2):
+            return print('hit')
+
+        # check for right turn condition - cond 3
+        if d == 'up' and surr(currPos, board)[0][0] == 2:
+            return stepRight(self, currPos)
+        elif d == 'down' and surr(currPos, board)[0][2] == 2:
+            return stepRight(self, currPos)
+        
+        
+        # check for left turn condition - cond 4
+        if d == 'up' and surr(currPos, board)[0][2] == 2:
+            return stepRight(self, currPos)
+        elif d == 'down' and surr(currPos, board)[2][2] == 2:
+            return stepRight(self, currPos)
+        
+        # check for left turn condition - cond 4
+        if d == 'up' and surr(currPos, board)[0][2] == 2:
+            return stepRight(self, currPos)
+        elif d == 'down' and surr(currPos, board)[2][2] == 2:
+            return stepRight(self, currPos)
+        
+        # check for left turn condition - cond 4
+        if d == 'up' and surr(currPos, board)[0][2] == 2:
+            return stepRight(self, currPos)
+        elif d == 'down' and surr(currPos, board)[2][2] == 2:
+            return stepRight(self, currPos)
+
 
 
 
