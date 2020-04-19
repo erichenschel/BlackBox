@@ -121,48 +121,100 @@ class Game:
         nextPos = (row+1, col)
         return nextPos, direction
 
-    # function which returns the path a ray 
-    # takes from a starting place and initial
-    # direction for a given board
-    def path(self, start, direction, board):
-        d = direction
-        row, col = start
-        path = [start]
 
-        # check for initial edge node hits - cond 2
-        if d == 'down' and (surr(currPos, board)[2][1] == 2 or surr(currPos, board)[1][1] == 2):
-            return print('hit')
-        elif d == 'up' and (surr(currPos, board)[0][1] == 2 or surr(currPos, board)[1][1] == 2):
-            return print('hit')
-        elif d == 'left' and (surr(currPos, board)[1][0] == 2 or surr(currPos, board)[1][1] ==2):
-            return print('hit')
-        elif d == 'right' and (surr(currPos, board)[1][2] == 2 or surr(currPos, board)[1][1] ==2):
-            return print('hit')
+    # check for initial edge node hits - cond 2
+    def hasHitAtom(self, currPos, board):
+        if d == 'down' and surr(currPos, board)[2][1] == 2:
+            path.append(start)
+            return path
+        elif d == 'down'and surr(currPos, board)[1][1] == 2:
+            return path
 
-        # check for right turn condition - cond 3
+        elif d == 'up' and surr(currPos, board)[0][1] == 2:
+            path.append(start)
+            return path
+        elif d == 'up' and surr(currPos, board)[1][1] == 2:
+            return path
+        
+        elif d == 'left' and surr(currPos, board)[1][0] == 2:
+            path.append(start)
+            return path
+        elif d == 'left' and surr(currPos, board)[1][1] ==2):
+            return path
+        
+        elif d == 'right' and surr(currPos, board)[1][2] == 2:
+            path.append(start)
+            return path
+        elif d == 'right' and surr(currPos, board)[1][1] ==2:
+            return path
+
+
+    # check for right turn condition - cond 3
+    def isRightTurn(self, currPos, board):
         if d == 'up' and surr(currPos, board)[0][0] == 2:
             return stepRight(self, currPos)
         elif d == 'down' and surr(currPos, board)[0][2] == 2:
             return stepRight(self, currPos)
-        
-        
-        # check for left turn condition - cond 4
+        else:
+            return False
+    
+
+    # check for left turn condition - cond 4
+    def isLeftTurn(self, currPos, board):
         if d == 'up' and surr(currPos, board)[0][2] == 2:
             return stepRight(self, currPos)
         elif d == 'down' and surr(currPos, board)[2][2] == 2:
             return stepRight(self, currPos)
+        else:
+            return False
+    
+    
+    # check for up turn condition - cond 5
+    def isUpTurn(self, currPos, board):
+        if d == 'right' and surr(currPos, board)[2][2] == 2:
+            return stepRight(self, currPos)
+        elif d == 'left' and surr(currPos, board)[2][0] == 2:
+            return stepRight(self, currPos)
+        else:
+            return False
+
+
+    # check for down turn condition - cond 6
+    def isDownTurn(self, currPos, board):
+        if d == 'right' and surr(currPos, board)[0][2] == 2:
+            return stepRight(self, currPos)
+        elif d == 'left' and surr(currPos, board)[0][0] == 2:
+            return stepRight(self, currPos)
+        else:
+            return False
         
+    # function which returns the path a ray 
+    # takes from a starting place and initial
+    # direction for a given board
+    # empty path means node on edge of board at start
+    def path(self, start, direction, board):
+        d = direction
+        row, col = start
+        path = []
+        currPos = start
+
+
+
+        # check for initial edge node hits - cond 2
+
+        # check for right turn condition - cond 3
+
         # check for left turn condition - cond 4
-        if d == 'up' and surr(currPos, board)[0][2] == 2:
-            return stepRight(self, currPos)
-        elif d == 'down' and surr(currPos, board)[2][2] == 2:
-            return stepRight(self, currPos)
-        
-        # check for left turn condition - cond 4
-        if d == 'up' and surr(currPos, board)[0][2] == 2:
-            return stepRight(self, currPos)
-        elif d == 'down' and surr(currPos, board)[2][2] == 2:
-            return stepRight(self, currPos)
+
+        # check for up turn condition - cond 5
+
+        # check for down turn condition - cond 6
+
+        # step forward algo - cond 1
+        while d == 'right':
+            path.append(currPos)
+
+
 
 
 
