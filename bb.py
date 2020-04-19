@@ -202,26 +202,48 @@ class Game:
         currPos = start
         exited = False
 
-        # step forward algo - cond 1
         while not exited:
 
             # check for initial edge node hits - cond 2
             if self.hasHitAtom(currPos, board) != False:
-            d = 
+                return self.hasHitAtom(currPos, board) 
+
+            path.append(currPos)
 
             # check for right turn condition - cond 3
             elif self.isRightTurn(currPos, board) != False:
+                currPos, d = self.isRightTurn(currPos, board)
+                pass
 
             # check for left turn condition - cond 4
             elif self.isLeftTurn(currPos, board) != False:
+                currPos, d = self.isLeftTurn(currPos, board)
+                pass
 
             # check for up turn condition - cond 5
             elif self.isUpTurn(currPos, board) != False:
+                currPos, d = self.isUpTurn(currPos, board)
+                pass
 
             # check for down turn condition - cond 6
             elif self.isDownTurn(currPos, board) != False:
+                currPos, d = self.isDownTurn(currPos, board)
+                pass
 
-            path.append(currPos)
+            # step forward algo - cond 1
+            else:
+                if d == 'up':
+                    currPos, d = self.stepUp(currPos)
+
+                elif d == 'down':
+                    currPos, d = self.stepDown(currPos)
+
+                elif d == 'right':
+                    currPos, d = self.stepRight(currPos)
+
+                elif d == 'left':
+                    currPos, d = self.stepLeft(currPos)
+
 
 
 
