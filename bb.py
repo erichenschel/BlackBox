@@ -1,3 +1,4 @@
+import numpy as np
 import random
 from surr import surroundings as surr
 
@@ -123,29 +124,32 @@ class Game:
 
 
     # check for initial edge node hits - cond 2
-    def hasHitAtom(self, currPos, board):
-        if d == 'down' and surr(currPos, board)[2][1] == 2:
-            path.append(start)
+    def hasHitAtom(self, currPos, board, path):
+        S = surr(currPos, board)
+        print(S[2][1])
+        print(currPos)
+        if d == 'down' and S[2][1] == 2:
+            path.append(currPos)
             return path
-        elif d == 'down'and surr(currPos, board)[1][1] == 2:
+        elif d == 'down'and S[1][1] == 2:
             return path
 
-        elif d == 'up' and surr(currPos, board)[0][1] == 2:
-            path.append(start)
+        elif d == 'up' and S[0][1] == 2:
+            path.append(currPos)
             return path
-        elif d == 'up' and surr(currPos, board)[1][1] == 2:
-            return path
-        
-        elif d == 'left' and surr(currPos, board)[1][0] == 2:
-            path.append(start)
-            return path
-        elif d == 'left' and surr(currPos, board)[1][1] ==2:
+        elif d == 'up' and S[1][1] == 2:
             return path
         
-        elif d == 'right' and surr(currPos, board)[1][2] == 2:
-            path.append(start)
+        elif d == 'left' and S[1][0] == 2:
+            path.append(currPos)
             return path
-        elif d == 'right' and surr(currPos, board)[1][1] ==2:
+        elif d == 'left' and S[1][1] ==2:
+            return path
+        
+        elif d == 'right' and S[1][2] == 2:
+            path.append(currPos)
+            return path
+        elif d == 'right' and S[1][1] ==2:
             return path
         
         else:
@@ -155,9 +159,9 @@ class Game:
     # check for right turn condition - cond 3
     def isRightTurn(self, currPos, board):
         if d == 'up' and surr(currPos, board)[0][0] == 2:
-            return stepRight(self, currPos)
+            return self.stepRight(currPos)
         elif d == 'down' and surr(currPos, board)[0][2] == 2:
-            return stepRight(self, currPos)
+            return self.stepRight(currPos)
         else:
             return False
     
@@ -165,9 +169,9 @@ class Game:
     # check for left turn condition - cond 4
     def isLeftTurn(self, currPos, board):
         if d == 'up' and surr(currPos, board)[0][2] == 2:
-            return stepLeft(self, currPos)
+            return self.stepLeft(currPos)
         elif d == 'down' and surr(currPos, board)[2][2] == 2:
-            return stepLeft(self, currPos)
+            return self.stepLeft(currPos)
         else:
             return False
     
@@ -175,9 +179,9 @@ class Game:
     # check for up turn condition - cond 5
     def isUpTurn(self, currPos, board):
         if d == 'right' and surr(currPos, board)[2][2] == 2:
-            return stepUp(self, currPos)
+            return self.stepUp(currPos)
         elif d == 'left' and surr(currPos, board)[2][0] == 2:
-            return stepUp(self, currPos)
+            return self.stepUp(currPos)
         else:
             return False
 
@@ -185,9 +189,9 @@ class Game:
     # check for down turn condition - cond 6
     def isDownTurn(self, currPos, board):
         if d == 'right' and surr(currPos, board)[0][2] == 2:
-            return stepDown(self, currPos)
+            return self.stepDown(currPos)
         elif d == 'left' and surr(currPos, board)[0][0] == 2:
-            return stepDown(self, currPos)
+            return self.stepDown(currPos)
         else:
             return False
         
@@ -197,7 +201,6 @@ class Game:
     # empty path means node on edge of board at start
     def path(self, start, direction, board):
         d = direction
-        row, col = start
         path = []
         currPos = start
         exited = False
@@ -205,13 +208,18 @@ class Game:
         while not exited:
 
             # check for initial edge node hits - cond 2
-            if self.hasHitAtom(currPos, board) != False:
-                return self.hasHitAtom(currPos, board) 
+            if self.hasHitAtom(currPos, board, path) != False:
+                return self.hasHitAtom(currPos, board, path) 
 
-            path.append(currPos)
+            r, c = currPos
+            if r < self.boardSize and c < self.boardSize and r >= 0 and c >=0:
+                path.append(currPos)
+            else:
+                exited = True
+                return path
 
             # check for right turn condition - cond 3
-            elif self.isRightTurn(currPos, board) != False:
+            if self.isRightTurn(currPos, board) != False:
                 currPos, d = self.isRightTurn(currPos, board)
                 pass
 
@@ -234,25 +242,12 @@ class Game:
             else:
                 if d == 'up':
                     currPos, d = self.stepUp(currPos)
-
                 elif d == 'down':
                     currPos, d = self.stepDown(currPos)
-
                 elif d == 'right':
                     currPos, d = self.stepRight(currPos)
-
                 elif d == 'left':
                     currPos, d = self.stepLeft(currPos)
-
-
-
-
-
-
-
-
-
-        return path
 
 if __name__=="__main__":
     G = Game()
@@ -260,9 +255,7 @@ if __name__=="__main__":
     print(board)
     start = G.rayStart()
     print('start', start)
-    #d = G.initDirection(start)
-    for i in range(8):
-        for j in range(8):
-            print((i, j))
-            surr = surr((i, j), board)
-            print(surr)
+    d = G.initDirection(start)
+    path = G.path(start, d, board)
+    print('direction', d)
+    print(path)
