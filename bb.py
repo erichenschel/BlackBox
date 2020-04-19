@@ -58,18 +58,23 @@ class Game:
 
         while c1 == None:
             c1 = input("Select a firing position (top, bottom, right, left): ")
+            d = None
             # top - row == 0
             if c1 == 'top':
                 row = 0
+                d = 'down'
             # bottom - row == 7
             elif c1 == 'bottom':
                 row = 7
+                d = 'up'
             # right - col == 7
             elif c1 == 'right':
                 col = 7
+                d = 'left'
             # left - col == 0
             elif c1 == 'left':
                 col = 0
+                d = 'right'
             else:
                 c1 = None
                 print("Error: Invalid entry.")
@@ -79,26 +84,15 @@ class Game:
             if pos.isdigit():
                 pos = int(pos)
                 if pos < self.boardSize and col != None:
-                    return pos, col
+                    return (pos, col), d
                 elif pos < self.boardSize and row != None:
-                    return row, pos
+                    return (row, pos), d
                 else:
                     pos = None
                     print("Error: Invalid entry.")
             else:
                 pos = None
                 print("Error: Invalid entry.")
-
-    # function to determine initial direction from start
-    def initDirection(self, start):
-        if start[0] == 0:
-            return 'down'
-        elif start[0] == self.boardSize-1:
-            return 'up'
-        elif start[1] == 0:
-            return 'right'
-        elif start[1] == self.boardSize-1:
-            return 'left'
 
     # step functions that return nextPos of ray and direction
     def stepRight(self, currPos):
@@ -192,7 +186,37 @@ class Game:
             return self.stepDown(currPos)
         else:
             return False
+       
+
+    # check for reflection - cond 6
+    def isReflection(self, currPos, board, d):
+        if d == 'up' and surr(currPos, board)[1][0] == 2 and surr(currPos, board)[2][1] == 5:
+            return print('Reflection')
+        elif d == 'up' and surr(currPos, board)[1][2] == 2 and surr(currPos, board)[2][1] == 5:
+            return print('Reflection')
+
+
+        elif d == 'down' and surr(currPos, board)[1][0] == 2 and surr(currPos, board)[0][1] == 5:
+            return print('Reflection')
+        elif d == 'down' and surr(currPos, board)[1][2] == 2 and surr(currPos, board)[0][1] == 5:
+            return print('Reflection')
+
+
+        elif d == 'right' and surr(currPos, board)[0][1] == 2 and surr(currPos, board)[1][0] == 5:
+            return print('Reflection')
+        elif d == 'right' and surr(currPos, board)[2][1] == 2 and surr(currPos, board)[1][0] == 5:
+            return print('Reflection')
+
+
+        elif d == 'left' and surr(currPos, board)[0][1] == 2 and surr(currPos, board)[1][0] == 5:
+            return print('Reflection')
+        elif d == 'left' and surr(currPos, board)[2][1] == 2 and surr(currPos, board)[1][0] == 5:
+            return print('Reflection')
         
+
+
+
+
     # function which returns the path a ray 
     # takes from a starting place and initial
     # direction for a given board
@@ -208,44 +232,48 @@ class Game:
             r, c = currPos
             if r < self.boardSize and c < self.boardSize and r >= 0 and c >=0:
                 path.append(currPos)
+
+                # check for initial edge node hits - cond 2
+                if self.hasHitAtom(currPos, board, path) != False:
+                    return self.hasHitAtom(currPos, board, path) 
+
+                # check for reflections from edge nodes - cond 7
+                if self.isReflection(currPos, board, d):
+                    return self.isReflection(currPos, board, d)
+
+
+                # check for right turn condition - cond 3
+                if self.isRightTurn(currPos, board, d) != False:
+                    currPos, d = self.isRightTurn(currPos, board, d)
+                    pass
+
+                # check for left turn condition - cond 4
+                elif self.isLeftTurn(currPos, board, d) != False:
+                    currPos, d = self.isLeftTurn(currPos, board, d)
+                    pass
+
+                # check for up turn condition - cond 5
+                elif self.isUpTurn(currPos, board, d) != False:
+                    currPos, d = self.isUpTurn(currPos, board, d)
+                    pass
+
+                # check for down turn condition - cond 6
+                elif self.isDownTurn(currPos, board, d) != False:
+                    currPos, d = self.isDownTurn(currPos, board, d)
+                    pass
+
+                # step forward algo - cond 1
+                else:
+                    if d == 'up':
+                        currPos, d = self.stepUp(currPos)
+                    elif d == 'down':
+                        currPos, d = self.stepDown(currPos)
+                    elif d == 'right':
+                        currPos, d = self.stepRight(currPos)
+                    elif d == 'left':
+                        currPos, d = self.stepLeft(currPos)
             else:
                 return path, d
-
-            # check for initial edge node hits - cond 2
-            if self.hasHitAtom(currPos, board, path) != False:
-                return self.hasHitAtom(currPos, board, path) 
-
-
-            # check for right turn condition - cond 3
-            if self.isRightTurn(currPos, board, d) != False:
-                currPos, d = self.isRightTurn(currPos, board, d)
-                pass
-
-            # check for left turn condition - cond 4
-            elif self.isLeftTurn(currPos, board, d) != False:
-                currPos, d = self.isLeftTurn(currPos, board, d)
-                pass
-
-            # check for up turn condition - cond 5
-            elif self.isUpTurn(currPos, board, d) != False:
-                currPos, d = self.isUpTurn(currPos, board, d)
-                pass
-
-            # check for down turn condition - cond 6
-            elif self.isDownTurn(currPos, board, d) != False:
-                currPos, d = self.isDownTurn(currPos, board, d)
-                pass
-
-            # step forward algo - cond 1
-            else:
-                if d == 'up':
-                    currPos, d = self.stepUp(currPos)
-                elif d == 'down':
-                    currPos, d = self.stepDown(currPos)
-                elif d == 'right':
-                    currPos, d = self.stepRight(currPos)
-                elif d == 'left':
-                    currPos, d = self.stepLeft(currPos)
 
 if __name__=="__main__":
     G = Game()
@@ -255,5 +283,5 @@ if __name__=="__main__":
     print('start', start)
     d = G.initDirection(start)
     path = G.path(start, d, board)
-    print('direction', d)
+    print('initial direction', d)
     print(path)
