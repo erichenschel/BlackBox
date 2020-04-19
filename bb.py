@@ -118,32 +118,28 @@ class Game:
 
 
     # check for initial edge node hits - cond 2
-    def hasHitAtom(self, currPos, board, path):
+    def hasHitAtom(self, currPos, board):
         S = surr(currPos, board)
         if d == 'down' and S[2][1] == 2:
-            path.append(currPos)
-            return path
+            return True
         elif d == 'down'and S[1][1] == 2:
-            return path
+            return True
 
         elif d == 'up' and S[0][1] == 2:
-            path.append(currPos)
-            return path
+            return True
         elif d == 'up' and S[1][1] == 2:
-            return path
+            return True
         
         elif d == 'left' and S[1][0] == 2:
-            path.append(currPos)
-            return path
-        elif d == 'left' and S[1][1] ==2:
-            return path
+            return True
+        elif d == 'left' and S[1][1] == 2:
+            return True
         
         elif d == 'right' and S[1][2] == 2:
-            path.append(currPos)
-            return path
-        elif d == 'right' and S[1][1] ==2:
-            return path
-        
+            return True
+        elif d == 'right' and S[1][1] == 2:
+            return True
+
         else:
             return False
 
@@ -234,8 +230,10 @@ class Game:
                 path.append(currPos)
 
                 # check for initial edge node hits - cond 2
-                if self.hasHitAtom(currPos, board, path) != False:
-                    return self.hasHitAtom(currPos, board, path) 
+                if self.hasHitAtom(currPos, board):
+                    exited = self.hasHitAtom(currPos, board)
+                    return path
+                    
 
                 # check for reflections from edge nodes - cond 7
                 if self.isReflection(currPos, board, d):
@@ -279,9 +277,9 @@ if __name__=="__main__":
     G = Game()
     board = G.gameBoard()[0]
     print(board)
-    start = G.rayStart()
-    print('start', start)
-    d = G.initDirection(start)
-    path = G.path(start, d, board)
-    print('initial direction', d)
-    print(path)
+    cancel = False
+    while not cancel:
+        start, d = G.rayStart()
+        print('start', start)
+        path = G.path(start, d, board)
+        print(path)
