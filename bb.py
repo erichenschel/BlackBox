@@ -277,10 +277,12 @@ class Game:
 if __name__=="__main__":
     G = Game()
     board = G.gameBoard()[0]
-    print(board)
+    viewBoard = np.array(G.blankBoard())
+
     cancel = False
     while not cancel:
         start, d = G.rayStart()
         print('start', start)
         path = G.path(start, d, board)
         print(path)
+	
