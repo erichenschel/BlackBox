@@ -100,16 +100,19 @@ class Game:
         nextPos = (row, col+1)
         direction = 'right'
         return nextPos, direction
+
     def stepLeft(self, currPos):
         row, col = currPos
         direction = 'left'
         nextPos = (row, col-1)
         return nextPos, direction
+
     def stepUp(self, currPos):
         row, col = currPos
         direction = 'up'
         nextPos = (row-1, col)
         return nextPos, direction
+
     def stepDown(self, currPos):
         row, col = currPos
         direction = 'down'
@@ -238,7 +241,7 @@ class Game:
 
                 # check for reflections from edge nodes - cond 7
                 if self.isReflection(currPos, board, d):
-                    return self.isReflection(currPos, board, d)
+                    return self.isReflection(currPos, board, d), currPos
 
 
                 # check for right turn condition - cond 3
@@ -277,10 +280,19 @@ class Game:
 if __name__=="__main__":
     G = Game()
     board = G.gameBoard()[0]
+    view = np.array(G.blankBoard())
+    print(view)
     print(board)
     cancel = False
     while not cancel:
         start, d = G.rayStart()
-        print('start', start)
+        #print('start', start)
         path = G.path(start, d, board)
         print(path)
+        for p in path:
+            row, col = p
+            if row == 'hit':
+                view[col[0]][col[1]] = 2
+            print(p)
+            #view[row][col] = 1
+        print(view)

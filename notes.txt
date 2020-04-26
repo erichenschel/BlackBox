@@ -1,3 +1,3 @@
 rayEntry() -- make sure they are integers -- keep asking for input until reqs satisfied -- give error method
 
-
+-- debug reflection path rule
