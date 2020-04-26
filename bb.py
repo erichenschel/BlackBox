@@ -280,9 +280,14 @@ class Game:
 if __name__=="__main__":
     G = Game()
     board = G.gameBoard()[0]
+<<<<<<< HEAD
     view = np.array(G.blankBoard())
     print(view)
     print(board)
+=======
+    viewBoard = np.array(G.blankBoard())
+
+>>>>>>> a1bca1cff64dac9adc3cb4042bf7d1bfb32397a6
     cancel = False
     while not cancel:
         # users firing position
@@ -293,8 +298,12 @@ if __name__=="__main__":
         interaction = G.path(start, d, board)[1]
         # cycle through the steps in the path
         print(path)
+<<<<<<< HEAD
         for step in path:
             print(step)
             row, col = step[0], step[1]
             view[row][col] = 1
         print(view)
+=======
+	
+>>>>>>> a1bca1cff64dac9adc3cb4042bf7d1bfb32397a6

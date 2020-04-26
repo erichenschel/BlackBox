@@ -1,0 +1,31 @@
+-- Visual window for 
+-- instructions type out themself
+
+-- Home Page--
+~ Title: border and text
+~ Instructions: border and text
+~ Start button: border, text , on tounch
+~ Settings button: border, text, on touch
+~ board: size shrink --> (show all interactions)
+
+--> Blank Board:
+--- View
+--- Background (color -- green)
+
+(8x8)
+--- Black square buttons (28) -- on edge
+--- Black squares in middle
+
+
+--> Active Board:
+--- Squares change color based on path (middle)
+--- Buttons light up red (on edge)
+
+--- buttons in middle reveal an ('X'-wrong guess) or 
+---- a (*Yellow Circle*-found atom)
+---- users guess where atoms are
+
+--- Yellow circular atom appears when tapped in correct position
+---
+
+
