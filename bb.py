@@ -234,14 +234,14 @@ class Game:
                 # check for initial edge node hits - cond 2
                 if self.hasHitAtom(currPos, board):
                     exited = self.hasHitAtom(currPos, board)
-                    path.append(('hit', currPos))
-                    return path
+                    path.append(currPos)
+                    return path, 'hit'
                     
                 path.append(currPos)
 
                 # check for reflections from edge nodes - cond 7
                 if self.isReflection(currPos, board, d):
-                    return self.isReflection(currPos, board, d), currPos
+                    return path, self.isReflection(currPos, board, d)
 
 
                 # check for right turn condition - cond 3
@@ -285,14 +285,16 @@ if __name__=="__main__":
     print(board)
     cancel = False
     while not cancel:
+        # users firing position
         start, d = G.rayStart()
-        #print('start', start)
-        path = G.path(start, d, board)
+        # finding the path of the ray through the board
+        path = G.path(start, d, board)[0]
+        # storing hit, reflection interactions
+        interaction = G.path(start, d, board)[1]
+        # cycle through the steps in the path
         print(path)
-        for p in path:
-            row, col = p
-            if row == 'hit':
-                view[col[0]][col[1]] = 2
-            print(p)
-            #view[row][col] = 1
+        for step in path:
+            print(step)
+            row, col = step[0], step[1]
+            view[row][col] = 1
         print(view)
